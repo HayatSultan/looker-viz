@@ -127,7 +127,7 @@ const vis: VisualizationDefinition = {
   
   updateAsync: function(data, element, config, queryResponse, details, done) {
     this.readyPromise.then(() => {
-      this.render(config);
+      this.render(config, data, queryResponse);
       done();
     });
   },
@@ -150,10 +150,18 @@ const vis: VisualizationDefinition = {
     });
   },
   
-  render: function(config: any) {
+  render: function(config: any, data: any[], queryResponse: any) {
     
     // Clear previous content
     this.container.selectAll("*").remove();
+
+    if (!data || data.length === 0) {
+      this.container.append("div")
+        .style("text-align", "center")
+        .style("padding-top", "40px")
+        .html("Run a query to see the Revenue Flow visualization.");
+      return;
+    }
     
     // Configuration
     var vizConfig = {
@@ -186,7 +194,7 @@ const vis: VisualizationDefinition = {
     };
     
     // Data for Revenue to End flow
-    var data = {
+    var staticData = {
       nodes: [
         {name: "Revenue", id: "revenue"},
         {name: "Gross Profit", id: "gross_profit"},
@@ -254,7 +262,7 @@ const vis: VisualizationDefinition = {
       }
     }
     
-    var sankeyData = sankey(data);
+    var sankeyData = sankey(staticData);
     var nodes = sankeyData.nodes;
     var links = sankeyData.links;
     
