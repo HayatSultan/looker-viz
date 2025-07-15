@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple Vis Test</title>
+</head>
+<body>
+  <div id="vis"></div>
+
+  <script>
+    // Mock the Looker API
+    const looker = {
+      plugins: {
+        visualizations: {
+          add: function(vis) {
+            this.vis = vis;
+          }
+        }
+      }
+    };
+  </script>
+
+  <script src="simple.js"></script>
+
+  <script>
+    // Mock data and query response (not used by this visualization)
+    const mockData = [];
+    const mockQueryResponse = {};
+    const mockConfig = {};
+
+    const visElement = document.getElementById('vis');
+    visElement.style.height = '500px';
+    const vis = looker.plugins.visualizations.vis;
+
+    // Create and update the visualization
+    vis.create(visElement, mockConfig);
+    vis.updateAsync(mockData, visElement, mockConfig, mockQueryResponse, {}, function() {});
+  </script>
+</body>
+</html> 
