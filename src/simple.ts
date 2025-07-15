@@ -198,7 +198,7 @@ const vis: VisualizationDefinition = {
       nodes: [
         {name: "Revenue", id: "revenue"},
         {name: "Gross Profit", id: "gross_profit"},
-        {name: "Operating Profit", id: "operating_profit"},
+        // {name: "Operating Profit", id: "operating_profit"},
         {name: "Operating Expenses", id: "operating_expenses"},
         {name: "Cost of Sales", id: "cost_of_sales"},
         {name: "Alliance Cost", id: "alliance_cost"},
@@ -213,20 +213,20 @@ const vis: VisualizationDefinition = {
         {name: "Non-Billable Cost", id: "non_billable_cost"}
       ],
       links: [
-        {source: 0, target: 1, value: 300},     // Revenue → Gross Profit
-        {source: 1, target: 2, value: 125},     // Gross Profit → Operating Profit
-        {source: 1, target: 3, value: 100},     // Gross Profit → Operating Expenses
-        {source: 1, target: 4, value: 75},      // Gross Profit → Cost of Sales
-        {source: 3, target: 5, value: 20},      // Operating Expenses → Alliance Cost
-        {source: 3, target: 6, value: 20},      // Operating Expenses → Direct Sales Cost
-        {source: 3, target: 7, value: 20},      // Operating Expenses → Marketing Cost
-        {source: 3, target: 8, value: 20},      // Operating Expenses → Delivery Cost
-        {source: 3, target: 9, value: 20},      // Operating Expenses → Bench Cost
-        {source: 2, target: 10, value: 125},    // Operating Profit → EBITDA
-        {source: 10, target: 11, value: 62.5},  // EBITDA → Account Profitability
-        {source: 10, target: 12, value: 62.5},  // EBITDA → Project Profitability
-        {source: 4, target: 13, value: 37.5},   // Cost of Sales → Support Cost
-        {source: 4, target: 14, value: 37.5}    // Cost of Sales → Non-Billable Cost
+        {source: 0, target: 1, value: 200},     // Revenue → Gross Profit
+        {source: 0, target: 3, value: 200},     // Gross Profit → Operating Profit
+        {source: 1, target: 2, value: 100},     // Gross Profit → Operating Expenses
+        {source: 1, target: 9, value: 100},      // Gross Profit → Cost of Sales
+        {source: 2, target: 4, value: 20},      // Operating Expenses → Alliance Cost
+        {source: 2, target: 5, value: 20},      // Operating Expenses → Direct Sales Cost
+        {source: 2, target: 6, value: 20},      // Operating Expenses → Marketing Cost
+        {source: 2, target: 7, value: 20},      // Operating Expenses → Delivery Cost
+        {source: 2, target: 8, value: 20},      // Operating Expenses → Bench Cost
+        {source: 9, target: 10, value: 50},    // Operating Profit → EBITDA
+        {source: 9, target: 11, value: 50},  // EBITDA → Account Profitability
+        {source: 3, target: 12, value: 100},  // EBITDA → Project Profitability
+        {source: 3, target: 13, value: 100}   // Cost of Sales → Support Cost
+        
       ]
     };
     
@@ -235,14 +235,14 @@ const vis: VisualizationDefinition = {
       .attr("width", vizConfig.width)
       .attr("height", vizConfig.height);
     
-    svg.append("text")
-      .attr("x", vizConfig.width / 2)
-      .attr("y", 25)
-      .attr("text-anchor", "middle")
-      .style("font-size", "18px")
-      .style("font-weight", "bold")
-      .style("fill", "#333")
-      .text("Revenue to End Flow");
+    // svg.append("text")
+    //   .attr("x", vizConfig.width / 2)
+    //   .attr("y", 25)
+    //   .attr("text-anchor", "middle")
+    //   .style("font-size", "18px")
+    //   .style("font-weight", "bold")
+    //   .style("fill", "#333")
+    //   .text("Revenue to End Flow");
     
     var sankey = d3.sankey()
       .nodeWidth(vizConfig.nodeWidth)
