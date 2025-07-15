@@ -12,6 +12,6 @@ constant: VIS_ID {
 
 visualization: {
   id: "@{VIS_ID}"
-  url: "https://YOUR_GITHUB_USERNAME.github.io/viz-simple-marketplace/simple.js"
+  url: "https://hayatsultan.github.io/looker-viz/simple.js"
   label: "@{VIS_LABEL}"
 } 
