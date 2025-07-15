@@ -22,7 +22,7 @@ const vis: VisualizationDefinition = {
     marketing_performance_dashboard_url: {
       type: "string",
       label: "Marketing Performance Dashboard URL",
-      default: "",
+      default: "https://dev.internal.looker.datatonic.team/dashboards/470",
       section: "Dashboard Links"
     },
     pipeline_dashboard_url: {
@@ -185,7 +185,7 @@ const vis: VisualizationDefinition = {
     
     // Configuration
     var vizConfig = {
-      width: 1800,
+      width: 1500,
       height: 700,
       margin: {top: 10, right: 10, bottom: 10, left: 10},
       nodeWidth: 30,
