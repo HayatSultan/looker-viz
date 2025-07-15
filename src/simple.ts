@@ -7,6 +7,36 @@ const vis: VisualizationDefinition = {
   id: "revenue_to_end_flow",
   label: "Revenue to End Flow",
   options: {
+    account_performance_dashboard_url: {
+      type: "string",
+      label: "Account Performance Dashboard URL",
+      default: "https://dev.internal.looker.datatonic.team/dashboards/459",
+      section: "Dashboard Links"
+    },
+    sales_performance_dashboard_url: {
+      type: "string",
+      label: "Sales Performance Dashboard URL",
+      default: "https://dev.internal.looker.datatonic.team/dashboards/459",
+      section: "Dashboard Links"
+    },
+    marketing_performance_dashboard_url: {
+      type: "string",
+      label: "Marketing Performance Dashboard URL",
+      default: "",
+      section: "Dashboard Links"
+    },
+    pipeline_dashboard_url: {
+      type: "string",
+      label: "Pipeline Dashboard URL",
+      default: "",
+      section: "Dashboard Links"
+    },
+    backlog_dashboard_url: {    
+      type: "string",
+      label: "Backlog Dashboard URL",
+      default: "",
+      section: "Dashboard Links"
+    },
     revenue_dashboard_url: {
       type: "string",
       label: "Revenue Dashboard URL",
@@ -19,18 +49,42 @@ const vis: VisualizationDefinition = {
       default: "",
       section: "Dashboard Links"
     },
-    operating_profit_dashboard_url: {
-      type: "string",
-      label: "Operating Profit Dashboard URL",
-      default: "",
-      section: "Dashboard Links"
-    },
     operating_expenses_dashboard_url: {
       type: "string",
       label: "Operating Expenses Dashboard URL",
       default: "",
       section: "Dashboard Links"
     },
+    support_cost_dashboard_url: {
+        type: "string",
+        label: "Support Cost Dashboard URL",
+        default: "",
+        section: "Dashboard Links"
+    },
+    non_billable_cost_dashboard_url: {
+        type: "string",
+        label: "Non-Billable Cost Dashboard URL",
+        default: "",
+        section: "Dashboard Links"
+    },
+    ebitda_dashboard_url: {
+        type: "string",
+        label: "EBITDA Dashboard URL",
+        default: "",
+        section: "Dashboard Links"
+      },
+    account_profitability_dashboard_url: {
+        type: "string",
+        label: "Account Profitability Dashboard URL",
+        default: "",
+        section: "Dashboard Links"
+      },
+    project_profitability_dashboard_url: {
+        type: "string",
+        label: "Project Profitability Dashboard URL",
+        default: "",
+        section: "Dashboard Links"
+      },
     cost_of_sales_dashboard_url: {
       type: "string",
       label: "Cost of Sales Dashboard URL",
@@ -66,36 +120,6 @@ const vis: VisualizationDefinition = {
       label: "Bench Cost Dashboard URL",
       default: "",
       section: "Dashboard Links"
-    },
-    ebitda_dashboard_url: {
-      type: "string",
-      label: "EBITDA Dashboard URL",
-      default: "",
-      section: "Dashboard Links"
-    },
-    account_profitability_dashboard_url: {
-      type: "string",
-      label: "Account Profitability Dashboard URL",
-      default: "",
-      section: "Dashboard Links"
-    },
-    project_profitability_dashboard_url: {
-      type: "string",
-      label: "Project Profitability Dashboard URL",
-      default: "",
-      section: "Dashboard Links"
-    },
-    support_cost_dashboard_url: {
-      type: "string",
-      label: "Support Cost Dashboard URL",
-      default: "",
-      section: "Dashboard Links"
-    },
-    non_billable_cost_dashboard_url: {
-      type: "string",
-      label: "Non-Billable Cost Dashboard URL",
-      default: "",
-      section: "Dashboard Links"
     }
   },
   
@@ -110,10 +134,6 @@ const vis: VisualizationDefinition = {
           .style("width", "100%")
           .style("height", "100%")
           .style("font-family", "Arial, sans-serif")
-          .style("background-color", "white")
-          .style("border-radius", "8px")
-          .style("box-shadow", "0 2px 10px rgba(0,0,0,0.1)")
-          .style("padding", "20px");
         resolve(null);
       };
 
@@ -165,67 +185,115 @@ const vis: VisualizationDefinition = {
     
     // Configuration
     var vizConfig = {
-      width: 1200,
-      height: 600,
-      margin: {top: 40, right: 40, bottom: 40, left: 40},
-      nodeWidth: 20,
-      nodePadding: 30,
+      width: 1800,
+      height: 700,
+      margin: {top: 10, right: 10, bottom: 10, left: 10},
+      nodeWidth: 30,
+      nodePadding: 65,
       linkOpacity: 0.5,
       linkHoverOpacity: 0.7
     };
     
     // Dashboard URL mapping
     var dashboardUrls = {
-      "Revenue": config.revenue_dashboard_url,
+      "Account Performance": config.account_performance_dashboard_url,
+      "Sales Performance": config.sales_performance_dashboard_url,
+      "Marketing Performance": config.marketing_performance_dashboard_url,
+      "Pipeline": config.pipeline_dashboard_url,
+      "Backlog": config.backlog_dashboard_url,
+      "REVENUE": config.revenue_dashboard_url,
       "Gross Profit": config.gross_profit_dashboard_url,
-      "Operating Profit": config.operating_profit_dashboard_url,
-      "Operating Expenses": config.operating_expenses_dashboard_url,
-      "Cost of Sales": config.cost_of_sales_dashboard_url,
+      "EXPENSES": config.operating_expenses_dashboard_url,
+      "Support Cost": config.support_cost_dashboard_url,
+      "Non-Billable Cost": config.non_billable_cost_dashboard_url,
+      "EBITDA": config.ebitda_dashboard_url,
+      "Account Profitability": config.account_profitability_dashboard_url,
+      "Project Profitability": config.project_profitability_dashboard_url,
+      "COST OF SALES": config.cost_of_sales_dashboard_url,
       "Alliance Cost": config.alliance_cost_dashboard_url,
       "Direct Sales Cost": config.direct_sales_cost_dashboard_url,
       "Marketing Cost": config.marketing_cost_dashboard_url,
       "Delivery Cost": config.delivery_cost_dashboard_url,
-      "Bench Cost": config.bench_cost_dashboard_url,
-      "EBITDA": config.ebitda_dashboard_url,
-      "Account Profitability": config.account_profitability_dashboard_url,
-      "Project Profitability": config.project_profitability_dashboard_url,
-      "Support Cost": config.support_cost_dashboard_url,
-      "Non-Billable Cost": config.non_billable_cost_dashboard_url
+      "Bench Cost": config.bench_cost_dashboard_url
     };
     
     // Data for Revenue to End flow
     var staticData = {
       nodes: [
-        {name: "Revenue", id: "revenue"},
-        {name: "Gross Profit", id: "gross_profit"},
-        // {name: "Operating Profit", id: "operating_profit"},
-        {name: "Operating Expenses", id: "operating_expenses"},
-        {name: "Cost of Sales", id: "cost_of_sales"},
-        {name: "Alliance Cost", id: "alliance_cost"},
-        {name: "Direct Sales Cost", id: "direct_sales_cost"},
-        {name: "Marketing Cost", id: "marketing_cost"},
-        {name: "Delivery Cost", id: "delivery_cost"},
-        {name: "Bench Cost", id: "bench_cost"},
-        {name: "EBITDA", id: "ebitda"},
-        {name: "Account Profitability", id: "account_profitability"},
-        {name: "Project Profitability", id: "project_profitability"},
-        {name: "Support Cost", id: "support_cost"},
-        {name: "Non-Billable Cost", id: "non_billable_cost"}
+        {name: "Account Performance", id: "account_performance"}, // 0
+        {name: "Sales Performance", id: "sales_performance"}, // 1
+        {name: "Marketing Performance", id: "marketing_performance"}, // 2
+        {name: "Pipeline", id: "pipeline"}, // 3
+        {name: "Backlog", id: "backlog"}, // 4
+        {name: "", id: "rest_of_pipeline"}, // 5
+        {name: "REVENUE", id: "revenue"}, // 6
+        {name: "Gross Profit", id: "gross_profit"}, // 7
+        {name: "EXPENSES", id: "operating_expenses"}, // 8
+        {name: "Support Cost", id: "support_cost"}, // 9
+        {name: "Non-Billable Cost", id: "non_billable_cost"}, // 10
+        {name: "EBITDA", id: "ebitda"}, // 11
+        {name: "Account Profitability", id: "account_profitability"}, // 12
+        {name: "Project Profitability", id: "project_profitability"}, // 13
+        {name: "COST OF SALES", id: "cost_of_sales"}, // 14
+        {name: "Alliance Cost", id: "alliance_cost"}, // 15
+        {name: "Direct Sales Cost", id: "direct_sales_cost"}, // 16
+        {name: "Marketing Cost", id: "marketing_cost"}, // 17
+        {name: "Delivery Cost", id: "delivery_cost"}, // 18
+        {name: "Bench Cost", id: "bench_cost"}, // 19
+        {name: "EarlyEnd", id: "early_end"}, // 20
+        {name: "", id: "dummy_node1"}, // 21
+        {name: "", id: "dummy_node2"} // 22
       ],
       links: [
-        {source: 0, target: 1, value: 200},     // Revenue → Gross Profit
-        {source: 0, target: 3, value: 200},     // Gross Profit → Operating Profit
-        {source: 1, target: 2, value: 100},     // Gross Profit → Operating Expenses
-        {source: 1, target: 9, value: 100},      // Gross Profit → Cost of Sales
-        {source: 2, target: 4, value: 20},      // Operating Expenses → Alliance Cost
-        {source: 2, target: 5, value: 20},      // Operating Expenses → Direct Sales Cost
-        {source: 2, target: 6, value: 20},      // Operating Expenses → Marketing Cost
-        {source: 2, target: 7, value: 20},      // Operating Expenses → Delivery Cost
-        {source: 2, target: 8, value: 20},      // Operating Expenses → Bench Cost
-        {source: 9, target: 10, value: 50},    // Operating Profit → EBITDA
-        {source: 9, target: 11, value: 50},  // EBITDA → Account Profitability
-        {source: 3, target: 12, value: 100},  // EBITDA → Project Profitability
-        {source: 3, target: 13, value: 100}   // Cost of Sales → Support Cost
+        {source: 0, target: 3, value: 70},  // Account Performance -> Pipeline
+        {source: 1, target: 3, value: 70},  // Sales Performance -> Pipeline
+        {source: 2, target: 3, value: 70},  // Marketing Performance -> Pipeline
+
+        {source: 3, target: 4, value: 210}, // Pipeline -> Backlog
+        // {source: 3, target: 5, value: 30}, // Pipeline -> Rest of Pipeline
+
+        // {source: 5, target: 20, value: 30}, // Rest of Pipeline -> EarlyEnd
+        
+        {source: 4, target: 6, value: 210},  // Backlog -> Revenue
+
+        {source: 6, target: 7, value: 120},     // Revenue -> Gross Profit
+        {source: 6, target: 14, value: 90},     // Revenue -> Cost of Sales
+
+        {source: 7, target: 8, value: 90},     // Gross Profit -> Expenses
+        {source: 7, target: 21, value: 0},     // Gross Profit -> DN1
+        {source: 7, target: 11, value: 30},    // Gross Profit -> EBITDA
+        {source: 21, target: 22, value: 0},    // DN1 -> DN2
+        {source: 22, target: 11, value: 0},    // DN2 -> EBITDA
+
+
+        {source: 8, target: 9, value: 45},      // Expense -> Support Cost
+        {source: 8, target: 10, value: 45},     // Expense -> Non-Billable Cost
+        
+        {source: 9, target: 20, value: 20},     // Support Cost -> EarlyEnd
+        {source: 10, target: 20, value: 20},    // Non-Billable Cost -> EarlyEnd
+
+        {source: 11, target: 12, value: 15},    // EBITDA -> Account Profitability
+        {source: 11, target: 13, value: 15},    // EBITDA -> Project Profitability
+        
+
+        {source: 14, target: 21, value: 1},    // COST OF SALES -> DN1
+        {source: 21, target: 15, value: 1},    // DN1 -> Alliance Cost
+        {source: 14, target: 15, value: 18},   // COST OF SALES -> Alliance Cost
+        {source: 21, target: 16, value: 1},    // DN1 -> Direct Sales Cost
+        {source: 14, target: 16, value: 18},   // COST OF SALES -> Direct Sales Cost
+        {source: 21, target: 17, value: 1},    // DN1 -> Marketing Cost
+        {source: 14, target: 17, value: 18},   // COST OF SALES -> Marketing Cost
+        {source: 21, target: 18, value: 1},    // DN1 -> Delivery Cost
+        {source: 14, target: 18, value: 18},   // COST OF SALES -> Delivery Cost
+        {source: 21, target: 19, value: 1},    // DN1 -> Bench Cost
+        {source: 14, target: 19, value: 18},   // COST OF SALES -> Bench Cost
+
+        {source: 15, target: 20, value: 18},   // Alliance Cost -> EarlyEnd
+        {source: 16, target: 20, value: 18},   // Direct Sales Cost -> EarlyEnd
+        {source: 17, target: 20, value: 18},   // Marketing Cost -> EarlyEnd
+        {source: 18, target: 20, value: 18},   // Delivery Cost -> EarlyEnd
+        {source: 19, target: 20, value: 18},   // Bench Cost -> EarlyEnd
+
         
       ]
     };
@@ -235,22 +303,47 @@ const vis: VisualizationDefinition = {
       .attr("width", vizConfig.width)
       .attr("height", vizConfig.height);
     
-    // svg.append("text")
-    //   .attr("x", vizConfig.width / 2)
-    //   .attr("y", 25)
-    //   .attr("text-anchor", "middle")
-    //   .style("font-size", "18px")
-    //   .style("font-weight", "bold")
-    //   .style("fill", "#333")
-    //   .text("Revenue to End Flow");
-    
     var sankey = d3.sankey()
       .nodeWidth(vizConfig.nodeWidth)
       .nodePadding(vizConfig.nodePadding)
+      .nodeSort(null)
       .extent([[vizConfig.margin.left, vizConfig.margin.top], 
               [vizConfig.width - vizConfig.margin.right, vizConfig.height - vizConfig.margin.bottom]]);
     
     var color = d3.scaleOrdinal(d3.schemeCategory10);
+
+    const nodeColorMap = {
+        "Sales Performance": "#A9A9A9",
+        "Marketing Performance": "#FFC0CB",
+        "Pipeline": "#ADD8E6",
+        "Backlog": "#FF69B4",
+        "": "#ADD8E6",
+        "REVENUE": "#A9A9A9",
+        "Gross Profit": "#FFC0CB",
+        "EXPENSES": "#ADD8E6",
+        "Support Cost": "#FF69B4",
+        "Non-Billable Cost": "#ADD8E6",
+        "EBITDA": "#FFC0CB",
+        "Account Profitability": "#A9A9A9",
+        "Project Profitability": "#FF69B4",
+        "COST OF SALES": "#ADD8E6",
+        "Alliance Cost": "#FF69B4",
+        "Direct Sales Cost": "#ADD8E6",
+        "Marketing Cost": "#FF69B4",
+        "Delivery Cost": "#ADD8E6",
+        "Bench Cost": "#FF69B4",
+        "EarlyEnd": "#ADD8E6",
+        "DummyNode1": "#FF69B4",
+        "DummyNode2": "#ADD8E6" 
+        
+      };
+      
+      const pathColorMap = {
+        "REVENUE->Gross Profit": "pink", // Can use color names
+        "REVENUE->COST OF SALES": "#87CEEB", // Or hex codes
+        "Gross Profit->EXPENSES": "#FF69B4", // A different pink
+        // ... add all other path colors here
+      };
     
     function handleNodeClick(event: any, d: any) {
       var dashboardUrl = dashboardUrls[d.name as keyof typeof dashboardUrls];
@@ -268,7 +361,37 @@ const vis: VisualizationDefinition = {
     
     svg.append("g")
       .selectAll("path")
-      .data(links)
+      .data(links.filter((d: any) => {
+        // --- Conditions to HIDE a link ---
+    
+        // 1. Hide the specific path from Gross Profit to DummyNode1 by checking their unique IDs.
+        const isGrossProfitToDummyPath = d.source.id === "gross_profit" && d.target.id === "dummy_node1";
+        const isDirectSalesCostToEarlyEndPath = d.source.id === "direct_sales_cost" && d.target.id === "early_end";
+        const isMarketingCostToEarlyEndPath = d.source.id === "marketing_cost" && d.target.id === "early_end";
+        const isDeliveryCostToEarlyEndPath = d.source.id === "delivery_cost" && d.target.id === "early_end";
+        const isBenchCostToEarlyEndPath = d.source.id === "bench_cost" && d.target.id === "early_end";
+        const isAllianceCostToEarlyEndPath = d.source.id === "alliance_cost" && d.target.id === "early_end";
+        const isSupportCostToEarlyEndPath = d.source.id === "support_cost" && d.target.id === "early_end";
+        const isNonBillableCostToEarlyEndPath = d.source.id === "non_billable_cost" && d.target.id === "early_end";
+        const isCostOfSalesToDummyPath = d.source.id === "cost_of_sales" && d.target.id === "dummy_node1";
+        const isDummyNode1ToAllianceCostPath = d.source.id === "dummy_node1" && d.target.id === "alliance_cost";
+        const isDummyNode1ToDirectSalesCostPath = d.source.id === "dummy_node1" && d.target.id === "direct_sales_cost";
+        const isDummyNode1ToMarketingCostPath = d.source.id === "dummy_node1" && d.target.id === "marketing_cost";
+        const isDummyNode1ToDeliveryCostPath = d.source.id === "dummy_node1" && d.target.id === "delivery_cost";
+        const isDummyNode1ToBenchCostPath = d.source.id === "dummy_node1" && d.target.id === "bench_cost";
+        const isDummyNode1ToDummyNode2Path = d.source.id === "dummy_node1" && d.target.id === "dummy_node2";
+        const isDummyNode2ToEBITDAPath = d.source.id === "dummy_node2" && d.target.id === "ebitda";
+    
+        
+        return !isGrossProfitToDummyPath && !isDirectSalesCostToEarlyEndPath &&
+        !isMarketingCostToEarlyEndPath && !isDeliveryCostToEarlyEndPath && 
+        !isBenchCostToEarlyEndPath && !isAllianceCostToEarlyEndPath &&
+        !isSupportCostToEarlyEndPath && !isNonBillableCostToEarlyEndPath &&
+        !isCostOfSalesToDummyPath && !isDummyNode1ToAllianceCostPath &&
+        !isDummyNode1ToDirectSalesCostPath && !isDummyNode1ToMarketingCostPath &&
+        !isDummyNode1ToDeliveryCostPath && !isDummyNode1ToBenchCostPath &&
+        !isDummyNode1ToDummyNode2Path && !isDummyNode2ToEBITDAPath
+    }))
       .join("path")
       .attr("class", "link")
       .attr("d", d3.sankeyLinkHorizontal())
@@ -304,7 +427,7 @@ const vis: VisualizationDefinition = {
     
     var node = svg.append("g")
       .selectAll("g")
-      .data(nodes)
+      .data(nodes.filter((d: any) => d.name !== "EarlyEnd" && d.name !== ""))
       .join("g")
       .attr("class", "node");
     
@@ -336,9 +459,9 @@ const vis: VisualizationDefinition = {
           .style("left", (event.pageX + 10) + "px")
           .style("top", (event.pageY - 28) + "px");
         
-        var tooltipHtml = "<strong>" + d.name + "</strong><br/>Value: " + d.value.toLocaleString() + "<br/><em>Click to view dashboard</em><br/>";
+        var tooltipHtml = "<strong>" + d.name + "<br/><em>Click to view dashboard</em><br/>";
         if (dashboardUrls[d.name as keyof typeof dashboardUrls] && dashboardUrls[d.name as keyof typeof dashboardUrls].trim() !== "") {
-          tooltipHtml += "<small>→ Dashboard configured</small>";
+          tooltipHtml += "";
         } else {
           tooltipHtml += "<small style=\"color: #ffcccc;\">No URL configured</small>";
         }
