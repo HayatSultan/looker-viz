@@ -10,19 +10,19 @@ const vis: VisualizationDefinition = {
     account_performance_dashboard_url: {
       type: "string",
       label: "Account Performance Dashboard URL",
-      default: "https://dev.internal.looker.datatonic.team/dashboards/459",
+      default: "",
       section: "Dashboard Links"
     },
     sales_performance_dashboard_url: {
       type: "string",
       label: "Sales Performance Dashboard URL",
-      default: "https://dev.internal.looker.datatonic.team/dashboards/459",
+      default: "",
       section: "Dashboard Links"
     },
     marketing_performance_dashboard_url: {
       type: "string",
       label: "Marketing Performance Dashboard URL",
-      default: "https://dev.internal.looker.datatonic.team/dashboards/470",
+      default: "",
       section: "Dashboard Links"
     },
     pipeline_dashboard_url: {
@@ -436,7 +436,7 @@ const vis: VisualizationDefinition = {
           .style("z-index", "1000");
         
         tooltip.transition().duration(200).style("opacity", 1);
-        tooltip.html(d.source.name + " → " + d.target.name + "<br/>Value: " + d.value.toLocaleString())
+        tooltip.html(d.source.name + " to " + d.target.name)
           .style("left", (event.pageX + 10) + "px")
           .style("top", (event.pageY - 28) + "px");
       })
