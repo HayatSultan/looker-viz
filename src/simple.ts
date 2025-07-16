@@ -310,28 +310,29 @@ const vis: VisualizationDefinition = {
       .extent([[vizConfig.margin.left, vizConfig.margin.top], 
               [vizConfig.width - vizConfig.margin.right, vizConfig.height - vizConfig.margin.bottom]]);
     
-    var color = d3.scaleOrdinal(d3.schemeCategory10);
+    // var color = d3.scaleOrdinal(d3.schemeCategory10);
 
     const nodeColorMap = {
-        "Sales Performance": "#A9A9A9",
-        "Marketing Performance": "#FFC0CB",
-        "Pipeline": "#ADD8E6",
-        "Backlog": "#FF69B4",
-        "": "#ADD8E6",
-        "REVENUE": "#A9A9A9",
-        "Gross Profit": "#FFC0CB",
-        "EXPENSES": "#ADD8E6",
-        "Support Cost": "#FF69B4",
-        "Non-Billable Cost": "#ADD8E6",
-        "EBITDA": "#FFC0CB",
-        "Account Profitability": "#A9A9A9",
-        "Project Profitability": "#FF69B4",
-        "COST OF SALES": "#ADD8E6",
-        "Alliance Cost": "#FF69B4",
-        "Direct Sales Cost": "#ADD8E6",
-        "Marketing Cost": "#FF69B4",
-        "Delivery Cost": "#ADD8E6",
-        "Bench Cost": "#FF69B4",
+        "Account Performance": "#ECBF42",
+        "Sales Performance": "#ECBF42",
+        "Marketing Performance": "#ECBF42",
+        "Pipeline": "#ECBF42",
+        "Backlog": "#ECBF42",
+        "": "#ECBF42",
+        "REVENUE": "#ECBF42",
+        "Gross Profit": "#A8E6DB",
+        "EXPENSES": "#2A5CFF",
+        "Support Cost": "#2A5CFF",
+        "Non-Billable Cost": "#2A5CFF",
+        "EBITDA": "#A8E6DB",
+        "Account Profitability": "#A8E6DB",
+        "Project Profitability": "#A8E6DB",
+        "COST OF SALES": "#2A5CFF",
+        "Alliance Cost": "#2A5CFF",
+        "Direct Sales Cost": "#2A5CFF",
+        "Marketing Cost": "#2A5CFF",
+        "Delivery Cost": "#2A5CFF",
+        "Bench Cost": "#2A5CFF",
         "EarlyEnd": "#ADD8E6",
         "DummyNode1": "#FF69B4",
         "DummyNode2": "#ADD8E6" 
@@ -339,10 +340,25 @@ const vis: VisualizationDefinition = {
       };
       
       const pathColorMap = {
-        "REVENUE->Gross Profit": "pink", // Can use color names
-        "REVENUE->COST OF SALES": "#87CEEB", // Or hex codes
-        "Gross Profit->EXPENSES": "#FF69B4", // A different pink
-        // ... add all other path colors here
+        "Account Performance->Pipeline": "#ECBF42",
+        "Sales Performance->Pipeline": "#ECBF42",
+        "Marketing Performance->Pipeline": "#ECBF42",
+        "Pipeline->Backlog": "#ECBF42",
+        "Backlog->REVENUE": "#ECBF42",
+        "REVENUE->Gross Profit": "#A8E6DB",
+        "REVENUE->COST OF SALES": "#2A5CFF",
+        "Gross Profit->EXPENSES": "#2A5CFF",
+        "Gross Profit->EBITDA": "#A8E6DB", 
+        "EXPENSES->Support Cost": "#2A5CFF",
+        "EXPENSES->Non-Billable Cost": "#2A5CFF",
+        "EBITDA->Account Profitability": "#A8E6DB",
+        "EBITDA->Project Profitability": "#A8E6DB",
+        "COST OF SALES->Alliance Cost": "#2A5CFF",
+        "COST OF SALES->Direct Sales Cost": "#2A5CFF",
+        "COST OF SALES->Marketing Cost": "#2A5CFF",
+        "COST OF SALES->Delivery Cost": "#2A5CFF",
+        "COST OF SALES->Bench Cost": "#2A5CFF"
+        // Any path not in this map will get the default gray color
       };
     
     function handleNodeClick(event: any, d: any) {
@@ -395,7 +411,11 @@ const vis: VisualizationDefinition = {
       .join("path")
       .attr("class", "link")
       .attr("d", d3.sankeyLinkHorizontal())
-      .attr("stroke", function(d: any) { return color(d.source.name); })
+    //   .attr("stroke", function(d: any) { return color(d.source.name); })
+    .attr("stroke", function(d: any) {
+        const key = `${d.source.name}->${d.target.name}`;
+        return pathColorMap[key as keyof typeof pathColorMap] || '#cccccc';
+      })
       .attr("stroke-width", function(d: any) { return Math.max(1, d.width); })
       .attr("stroke-opacity", vizConfig.linkOpacity)
       .attr("fill", "none")
@@ -436,7 +456,8 @@ const vis: VisualizationDefinition = {
       .attr("y", function(d: any) { return d.y0; })
       .attr("height", function(d: any) { return d.y1 - d.y0; })
       .attr("width", function(d: any) { return d.x1 - d.x0; })
-      .attr("fill", function(d: any) { return color(d.name); })
+    //   .attr("fill", function(d: any) { return color(d.name); })
+      .attr("fill", function(d: any) { return nodeColorMap[d.name as keyof typeof nodeColorMap] || '#cccccc'; })
       .attr("stroke", "#333")
       .attr("stroke-width", 1)
       .style("cursor", "pointer")
