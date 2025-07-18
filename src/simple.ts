@@ -185,8 +185,8 @@ const vis: VisualizationDefinition = {
     
     // Configuration
     var vizConfig = {
-      width: 1500,
-      height: 700,
+      width: 1200,
+      height: 650,
       margin: {top: 10, right: 10, bottom: 10, left: 10},
       nodeWidth: 30,
       nodePadding: 65,
@@ -360,6 +360,33 @@ const vis: VisualizationDefinition = {
         "COST OF SALES->Bench Cost": "#2A5CFF"
         // Any path not in this map will get the default gray color
       };
+
+
+    function wrap(text: any, width: number) {
+      text.each(function() {
+        var text = d3.select(this),
+        words = text.text().split(/\s+/).reverse(),
+        word,
+        line: string[] = [],
+        lineNumber = 0,
+        lineHeight = 1.1,
+        x = text.attr("x"),
+        y = text.attr("y"),
+        dy = parseFloat(text.attr("dy")),
+        tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
+        
+        while (word = words.pop()) {
+          line.push(word);
+          tspan.text(line.join(" "));
+          if (tspan.node().getComputedTextLength() > width) {
+            line.pop();
+            tspan.text(line.join(" "));
+          }
+          line = [word];
+          tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", (++lineNumber * lineHeight) + "em").text(word);
+        }
+      })
+    }
     
     function handleNodeClick(event: any, d: any) {
       var dashboardUrl = dashboardUrls[d.name as keyof typeof dashboardUrls];
@@ -379,8 +406,6 @@ const vis: VisualizationDefinition = {
       .selectAll("path")
       .data(links.filter((d: any) => {
         // --- Conditions to HIDE a link ---
-    
-        // 1. Hide the specific path from Gross Profit to DummyNode1 by checking their unique IDs.
         const isGrossProfitToDummyPath = d.source.id === "gross_profit" && d.target.id === "dummy_node1";
         const isDirectSalesCostToEarlyEndPath = d.source.id === "direct_sales_cost" && d.target.id === "early_end";
         const isMarketingCostToEarlyEndPath = d.source.id === "marketing_cost" && d.target.id === "early_end";
@@ -436,7 +461,7 @@ const vis: VisualizationDefinition = {
           .style("z-index", "1000");
         
         tooltip.transition().duration(200).style("opacity", 1);
-        tooltip.html(d.source.name + " to " + d.target.name)
+        tooltip.html(d.source.name + " → " + d.target.name)
           .style("left", (event.pageX + 10) + "px")
           .style("top", (event.pageY - 28) + "px");
       })
