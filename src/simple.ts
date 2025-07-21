@@ -126,6 +126,7 @@ const vis: VisualizationDefinition = {
   readyPromise: null,
 
   create: function(element, config) {
+    element.style.backgroundColor = 'transparent';
     this.readyPromise = new Promise((resolve) => {
       const setup = () => {
         this.container = d3.select(element)
@@ -226,15 +227,15 @@ const vis: VisualizationDefinition = {
         {name: "Pipeline", id: "pipeline"}, // 3
         {name: "Backlog", id: "backlog"}, // 4
         {name: "", id: "rest_of_pipeline"}, // 5
-        {name: "REVENUE", id: "revenue"}, // 6
+        {name: "Revenue", id: "revenue"}, // 6
         {name: "Gross Profit", id: "gross_profit"}, // 7
-        {name: "EXPENSES", id: "operating_expenses"}, // 8
+        {name: "Expenses", id: "operating_expenses"}, // 8
         {name: "Support Cost", id: "support_cost"}, // 9
         {name: "Non-Billable Cost", id: "non_billable_cost"}, // 10
         {name: "EBITDA", id: "ebitda"}, // 11
         {name: "Account Profitability", id: "account_profitability"}, // 12
         {name: "Project Profitability", id: "project_profitability"}, // 13
-        {name: "COST OF SALES", id: "cost_of_sales"}, // 14
+        {name: "Cost of Sales", id: "cost_of_sales"}, // 14
         {name: "Alliance Cost", id: "alliance_cost"}, // 15
         {name: "Direct Sales Cost", id: "direct_sales_cost"}, // 16
         {name: "Marketing Cost", id: "marketing_cost"}, // 17
@@ -319,15 +320,15 @@ const vis: VisualizationDefinition = {
         "Pipeline": "#ECBF42",
         "Backlog": "#ECBF42",
         "": "#ECBF42",
-        "REVENUE": "#ECBF42",
+        "Revenue": "#ECBF42",
         "Gross Profit": "#A8E6DB",
-        "EXPENSES": "#2A5CFF",
+        "Expenses": "#2A5CFF",
         "Support Cost": "#2A5CFF",
         "Non-Billable Cost": "#2A5CFF",
         "EBITDA": "#A8E6DB",
         "Account Profitability": "#A8E6DB",
         "Project Profitability": "#A8E6DB",
-        "COST OF SALES": "#2A5CFF",
+        "Cost of Sales": "#2A5CFF",
         "Alliance Cost": "#2A5CFF",
         "Direct Sales Cost": "#2A5CFF",
         "Marketing Cost": "#2A5CFF",
@@ -344,20 +345,20 @@ const vis: VisualizationDefinition = {
         "Sales Performance->Pipeline": "#ECBF42",
         "Marketing Performance->Pipeline": "#ECBF42",
         "Pipeline->Backlog": "#ECBF42",
-        "Backlog->REVENUE": "#ECBF42",
-        "REVENUE->Gross Profit": "#A8E6DB",
-        "REVENUE->COST OF SALES": "#2A5CFF",
-        "Gross Profit->EXPENSES": "#2A5CFF",
+        "Backlog->Revenue": "#ECBF42",
+        "Revenue->Gross Profit": "#A8E6DB",
+        "Revenue->Cost of Sales": "#2A5CFF",
+        "Gross Profit->Expenses": "#2A5CFF",
         "Gross Profit->EBITDA": "#A8E6DB", 
-        "EXPENSES->Support Cost": "#2A5CFF",
-        "EXPENSES->Non-Billable Cost": "#2A5CFF",
+        "Expenses->Support Cost": "#2A5CFF",
+        "Expenses->Non-Billable Cost": "#2A5CFF",
         "EBITDA->Account Profitability": "#A8E6DB",
         "EBITDA->Project Profitability": "#A8E6DB",
-        "COST OF SALES->Alliance Cost": "#2A5CFF",
-        "COST OF SALES->Direct Sales Cost": "#2A5CFF",
-        "COST OF SALES->Marketing Cost": "#2A5CFF",
-        "COST OF SALES->Delivery Cost": "#2A5CFF",
-        "COST OF SALES->Bench Cost": "#2A5CFF"
+        "Cost of Sales->Alliance Cost": "#2A5CFF",  
+        "Cost of Sales->Direct Sales Cost": "#2A5CFF",
+        "Cost of Sales->Marketing Cost": "#2A5CFF",
+        "Cost of Sales->Delivery Cost": "#2A5CFF",
+        "Cost of Sales->Bench Cost": "#2A5CFF"
         // Any path not in this map will get the default gray color
       };
 
@@ -365,25 +366,25 @@ const vis: VisualizationDefinition = {
     function wrap(text: any, width: number) {
       text.each(function() {
         var text = d3.select(this),
-        words = text.text().split(/\s+/).reverse(),
-        word,
-        line: string[] = [],
-        lineNumber = 0,
-        lineHeight = 1.1,
-        x = text.attr("x"),
-        y = text.attr("y"),
-        dy = parseFloat(text.attr("dy")),
-        tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
+            words = text.text().split(/\s+/).reverse(),
+            word,
+            line: string[] = [],
+            lineNumber = 0,
+            lineHeight = 1.1, // ems
+            x = text.attr("x"),
+            y = text.attr("y"),
+            dy = parseFloat(text.attr("dy")) || 0,
+            tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
         
         while (word = words.pop()) {
           line.push(word);
           tspan.text(line.join(" "));
-          if (tspan.node().getComputedTextLength() > width) {
+          if (tspan.node().getComputedTextLength() > width && line.length > 1) {
             line.pop();
             tspan.text(line.join(" "));
+            line = [word];
+            tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
           }
-          line = [word];
-          tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", (++lineNumber * lineHeight) + "em").text(word);
         }
       })
     }
@@ -521,7 +522,7 @@ const vis: VisualizationDefinition = {
         d3.selectAll(".revenue-tooltip").remove();
       });
     
-    node.append("text")
+    var nodeText = node.append("text")
       .attr("x", function(d: any) { return d.x0 < vizConfig.width / 2 ? d.x1 + 6 : d.x0 - 6; })
       .attr("y", function(d: any) { return (d.y1 + d.y0) / 2; })
       .attr("dy", "0.35em")
@@ -531,6 +532,18 @@ const vis: VisualizationDefinition = {
       .style("font-weight", "bold")
       .style("fill", "#333")
       .style("pointer-events", "none");
+
+    const labelsToWrap = [
+        "Gross Profit", "Cost of Sales", 
+        // "Direct Sales Cost", "Marketing Cost", "Delivery Cost", 
+        // "Bench Cost", "Support Cost", "Alliance Cost",
+        "Account Performance", "Sales Performance", "Marketing Performance"
+        // "Account Profitability", "Project Profitability"
+    ];
+
+    nodeText.filter(function(d: any) {
+        return labelsToWrap.includes(d.name);
+    }).call(wrap, 60);
   }
 };
 
