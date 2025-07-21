@@ -185,8 +185,8 @@ const vis: VisualizationDefinition = {
     
     // Configuration
     var vizConfig = {
-      width: 1200,
-      height: 650,
+      width: 1400,
+      height: 700,
       margin: {top: 10, right: 10, bottom: 10, left: 50},
       nodeWidth: 30,
       nodePadding: 65,
