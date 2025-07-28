@@ -393,7 +393,7 @@ const vis: VisualizationDefinition = {
       var dashboardUrl = dashboardUrls[d.name as keyof typeof dashboardUrls];
       
       if (dashboardUrl && dashboardUrl.trim() !== "") {
-        window.open(dashboardUrl, "_blank");
+        window.open(dashboardUrl, "_self");
       } else {
         alert("No dashboard URL configured for " + d.name + ". Please configure it in the visualization settings.");
       }
