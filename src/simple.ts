@@ -2,6 +2,7 @@ import { Looker, VisualizationDefinition } from './types';
 
 declare var looker: Looker;
 declare var d3: any;
+declare var LookerCharts: any;
 
 const vis: VisualizationDefinition = {
   id: "revenue_to_end_flow",
@@ -393,7 +394,13 @@ const vis: VisualizationDefinition = {
       var dashboardUrl = dashboardUrls[d.name as keyof typeof dashboardUrls];
       
       if (dashboardUrl && dashboardUrl.trim() !== "") {
-        window.open(dashboardUrl, "_self");
+        LookerCharts.Utils.openDrillMenu({
+          links: [{
+            label: "Open Dashboard",
+            url: dashboardUrl
+          }],
+          event: event
+        });
       } else {
         alert("No dashboard URL configured for " + d.name + ". Please configure it in the visualization settings.");
       }
